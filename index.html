@@ -81,6 +81,23 @@ $jokeForm
     .append($jokeInput)
     .append($submitBtn)
     .appendTo(document.body)
+    .on('submit', event => {
+        event.preventDefault();
+        const searchTerm = $jokeInput.val();
+        searchJoke(searchTerm)
+            .then(jokesArray => {
+                $(jokesArray).each((index, joke) => {
+                    $('<p>', {
+                        text: joke,
+                        class: 'joke-result'
+                    }).appendTo(document.body)
+                })
+            })
+    });
+// Outside of our .on('submit') handler
+$(document.body).on('click', '.joke-result', event => {
+    $(event.target).remove();
+});
 </script>
 </body>
 </html>
