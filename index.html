@@ -8,5 +8,51 @@
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="./index.js"></script>
+<script>
+    const $container = $('<div>');
+const $title = $('<h1>', {
+    text: 'Dad Jokes'
+});
+
+$container.append($title);
+$(document.body).append($container);
+$title.css('color', 'tomato');
+
+const $jokeButton = $('<button></button>', {
+    text: 'Click for a new joke 😂'
+}) 
+$jokeButton.appendTo($container);
+
+$jokeButton.on('click', event => {
+    console.log('You clicked!');
+    getJoke()
+        .then(joke => {
+            $('.joke').remove();
+
+            $('<p></p>', {
+                text: joke,
+            }).addClass('joke')
+              .hide()
+              .appendTo($container)
+              .fadeIn();  // semi-colon goes on the last method in the chain
+        });
+});
+
+// Creat and send AJAX request
+
+function getJoke() {
+    return $.ajax({
+        url: 'https://icanhazdadjoke.com/',
+        headers: {
+            'Accept': 'application/json'        
+        }
+    }).then(res => {
+        return res.joke;
+    }).catch(err => {
+        console.log(err);
+        return 'There was an error making the reqeuest';
+    });
+}
+</script>
 </body>
 </html>
